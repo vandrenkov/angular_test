@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Run tests in headless mode for Jenkins
+                sh 'ng test --watch=false --browsers=ChromeHeadless'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'ng build --configuration production'
+            }
+        }
+    }
+}
