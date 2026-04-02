@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker { 
+            image 'trion/ng-cli-karma:latest' 
+            // This image has Node, Angular CLI, and Chrome pre-installed
+        }
+    }
 
     stages {
         stage('Checkout') {
