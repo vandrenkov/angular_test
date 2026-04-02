@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'trion/ng-cli-karma:latest' }
+    }
 
     stages {
         stage('Checkout') {
