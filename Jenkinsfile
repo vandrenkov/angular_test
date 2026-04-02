@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'npx ng build --configuration production'
+                sh 'ng build --configuration production'
             }
         }
     }
