@@ -20,7 +20,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'ng build --configuration production'
+                // Use npx so Jenkins can find the 'ng' command
+                sh 'npx ng build --configuration production'
             }
         }
     }
