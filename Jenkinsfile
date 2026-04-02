@@ -15,7 +15,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Run tests in headless mode for Jenkins
-                sh 'npx npx npm run test:headless'
+                sh 'npx npm run test:headless'
             }
         }
         stage('Build') {
