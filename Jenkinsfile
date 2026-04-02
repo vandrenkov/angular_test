@@ -9,13 +9,13 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh 'npm install --legacy-peer-deps'
             }
         }
         stage('Test') {
             steps {
                 // Run tests in headless mode for Jenkins
-                sh 'npx ng test --watch=false --browsers=ChromeHeadless'
+                sh 'npx npx npm run test:headless'
             }
         }
         stage('Build') {
