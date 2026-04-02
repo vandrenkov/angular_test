@@ -15,7 +15,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Run tests in headless mode for Jenkins
-                sh 'npx ng test --watch=false --browsers=ChromeHeadless --no-sandbox --disable-gpu'
+                sh 'npx ng test --watch=false --browsers=ChromeHeadless -- --no-sandbox --disable-gpu'
             }
         }
         stage('Build') {
