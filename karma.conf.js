@@ -35,7 +35,15 @@ module.exports = function (config) {
       ]
     },
     reporters: ['progress', 'kjhtml'],
-    browsers: ['Chrome'],
+    // browsers: ['Chrome'],
+    browsers: ['ChromeHeadlessCI'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu', '--no-proxy-server']
+      }
+    },    
+    singleRun: true, // This replaces --watch=false
     restartOnFileChange: true
   });
 };
