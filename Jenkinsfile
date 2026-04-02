@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker { 
-            image 'trion/ng-cli-karma:latest' 
-            // This image has Node, Angular CLI, and Chrome pre-installed
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
@@ -20,7 +15,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Run tests in headless mode for Jenkins
-                sh 'npx npm run test:headless'
+                sh 'npx ng test --watch=false --browsers=ChromeHeadless --no-sandbox --disable-gpu'
             }
         }
         stage('Build') {
