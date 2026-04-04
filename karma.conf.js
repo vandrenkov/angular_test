@@ -1,6 +1,8 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+// Resolve Chromium from Puppeteer (same pattern as many Angular+Karma CI setups).
+// PUPPETEER_CACHE_DIR can be set by Jenkins to pin the browser download cache for purge tests.
 const puppeteer = require('puppeteer');
 process.env.CHROME_BIN = puppeteer.executablePath();
 
@@ -40,10 +42,15 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessCI: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--disable-gpu', '--no-proxy-server']
+        flags: [
+          '--no-sandbox',
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--no-proxy-server'
+        ]
       }
-    },    
-    singleRun: true, // This replaces --watch=false
-    restartOnFileChange: true
+    },
+    singleRun: true,
+    restartOnFileChange: false
   });
 };

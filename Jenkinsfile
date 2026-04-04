@@ -1,6 +1,18 @@
+// Requires Node.js + npm on the agent (install in the Jenkins controller image, or use an agent with Node).
+// To use "agent { docker { image '...' } }" instead, install the "Docker Pipeline" plugin and ensure
+// the Jenkins agent can run Docker (docker.sock mount or Docker-in-Docker).
 pipeline {
-    agent {
-        docker { image 'trion/ng-cli-karma:latest' }
+    agent any
+
+    options {
+        timestamps()
+        timeout(time: 30, unit: 'MINUTES')
+    }
+
+    environment {
+        CI = 'true'
+        // Fixed path under the workspace so cache purge / scheduled jobs can target the same tree as builds.
+        PUPPETEER_CACHE_DIR = "${env.WORKSPACE}/.cache/puppeteer"
     }
 
     stages {
@@ -11,20 +23,18 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm install --legacy-peer-deps'
+                sh 'node -v && npm -v'
+                sh 'npm ci --legacy-peer-deps'
             }
         }
         stage('Test') {
             steps {
-                // Run tests in headless mode for Jenkins
-                // sh 'npx ng test --watch=false --browsers=ChromeHeadless -- --no-sandbox --disable-gpu'
-                // This is cleaner and less prone to syntax errors
                 sh 'npm run test:ci'
             }
         }
         stage('Build') {
             steps {
-                sh 'npx ng build --configuration production'
+                sh 'npx ng build test_jenkins --configuration production'
             }
         }
     }
