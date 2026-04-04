@@ -24,7 +24,6 @@ pipeline {
         }
         stage('Build') {
             steps {
-                // Use npx so Jenkins can find the 'ng' command
                 sh 'npx ng build --configuration production'
             }
         }
