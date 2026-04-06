@@ -5,7 +5,7 @@ pipeline {
     agent any
 
       tools {
-        nodejs 'node20' // This must match the name you gave in Global Tool Configuration
+        nodejs 'node' // This must match the name you gave in Global Tool Configuration
     }
 
     options {
@@ -20,14 +20,6 @@ pipeline {
     }
 
     stages {
-        stage('Initialization') {
-            steps {
-                sh '''
-                    echo "WORKSPACE=${WORKSPACE}"
-                    echo "PUPPETEER_CACHE_DIR=${PUPPETEER_CACHE_DIR}"
-                '''
-            }
-        }
         stage('Checkout') {
             steps {
                 checkout scm
@@ -39,14 +31,6 @@ pipeline {
                 sh 'npm ci --legacy-peer-deps'
             }
         }
-        stage('Install Chrome') {
-            steps {
-                sh '''
-                    mkdir -p $PUPPETEER_CACHE_DIR
-                    npx puppeteer browsers install chrome
-                '''
-            }
-        }      
         stage('Test') {
             steps {
                 sh 'npm run test:ci'
