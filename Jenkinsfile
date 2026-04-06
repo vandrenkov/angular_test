@@ -39,6 +39,14 @@ pipeline {
                 sh 'npm ci --legacy-peer-deps'
             }
         }
+        stage('Install Chrome') {
+            steps {
+                sh '''
+                    mkdir -p $PUPPETEER_CACHE_DIR
+                    npx puppeteer browsers install chrome
+                '''
+            }
+        }      
         stage('Test') {
             steps {
                 sh 'npm run test:ci'
