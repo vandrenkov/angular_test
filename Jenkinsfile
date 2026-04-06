@@ -20,6 +20,14 @@ pipeline {
     }
 
     stages {
+        stage('Initialization') {
+            steps {
+                sh '''
+                    echo "WORKSPACE=${WORKSPACE}"
+                    echo "PUPPETEER_CACHE_DIR=${PUPPETEER_CACHE_DIR}"
+                '''
+            }
+        }
         stage('Checkout') {
             steps {
                 checkout scm
