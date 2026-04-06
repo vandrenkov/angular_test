@@ -18,7 +18,7 @@ pipeline {
         // Fixed path under the workspace so cache purge / scheduled jobs can target the same tree as builds.
         PUPPETEER_CACHE_DIR = "${env.WORKSPACE}/.cache/puppeteer"
         // Replace /the/path/you/found with the actual directory from step 1
-        LD_LIBRARY_PATH = "/usr/lib64/libatomic.so.1:$LD_LIBRARY_PATH"
+        LD_LIBRARY_PATH = "/usr/lib64/:$LD_LIBRARY_PATH"
     }
 
     stages {
