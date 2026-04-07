@@ -4,6 +4,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'node20' // Match Global Tool Configuration name (same as angular.jenkins.solution)
+    }
+
     options {
         timestamps()
         timeout(time: 30, unit: 'MINUTES')
@@ -21,10 +25,24 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Initialization') {
+            steps {
+                sh '''
+                    echo "WORKSPACE=${WORKSPACE}"
+                    echo "PUPPETEER_CACHE_DIR=${PUPPETEER_CACHE_DIR}"
+                    df -h . || true
+                '''
+            }
+        }
         stage('Install Dependencies') {
             steps {
                 sh 'node -v && npm -v'
-                sh 'npm ci --legacy-peer-deps'
+                // Skip Puppeteer postinstall download during npm ci; install browser once into PUPPETEER_CACHE_DIR.
+                sh '''
+                    export PUPPETEER_SKIP_DOWNLOAD=true
+                    npm ci --legacy-peer-deps
+                '''
+                sh 'npx puppeteer browsers install chrome'
             }
         }
         stage('Test') {
